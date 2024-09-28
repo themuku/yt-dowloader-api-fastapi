@@ -26,6 +26,7 @@ async def download_video(request: Request, background_tasks: BackgroundTasks):
         ydl_opts = {
             'format': 'best',
             'outtmpl': os.path.join(output_path, '%(title)s.%(ext)s'),
+            'cookiefile': 'cookies.txt',  # Path to your cookies file
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=True)
