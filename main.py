@@ -1,20 +1,33 @@
 from fastapi import FastAPI, Request, BackgroundTasks
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 import os
 import yt_dlp
 
 app = FastAPI()
 
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Set output_path to the root directory of the project
 output_path = os.path.dirname(os.path.abspath(__file__))
 os.makedirs(output_path, exist_ok=True)
 
+
 def delete_file(file_path: str):
     os.remove(file_path)
+
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
 
 @app.get("/download")
 async def download_video(request: Request, background_tasks: BackgroundTasks):
